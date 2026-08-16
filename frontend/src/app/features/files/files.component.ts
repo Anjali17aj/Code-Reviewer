@@ -476,20 +476,33 @@ export class FilesComponent implements OnInit {
     );
 
     let completed = 0;
+    let failed = 0;
     uploadObservables.forEach(obs => obs.subscribe({
       next: (uploaded) => {
         completed++;
         if (completed === 1) this.selectFile(uploaded);
-        if (completed === uploadObservables.length) {
+        if (completed + failed === uploadObservables.length) {
           this.loadFiles();
-          this.toastService.success(completed + ' file' + (completed !== 1 ? 's' : '') + ' uploaded');
+          if (failed === 0) {
+            this.toastService.success(completed + ' file' + (completed !== 1 ? 's' : '') + ' uploaded');
+          } else if (completed === 0) {
+            this.toastService.error('Upload failed. The server may be starting up - please try again.');
+          } else {
+            this.toastService.warning(completed + ' file' + (completed !== 1 ? 's' : '') + ' uploaded, ' + failed + ' failed');
+          }
         }
       },
-      error: () => {
+      error: (err) => {
         completed++;
-        if (completed === uploadObservables.length) {
+        failed++;
+        console.error('Upload failed:', err);
+        if (completed + failed === uploadObservables.length) {
           this.loadFiles();
-          this.toastService.error('Some files failed to upload');
+          if (failed === uploadObservables.length) {
+            this.toastService.error('Upload failed. The server may be starting up - please try again.');
+          } else {
+            this.toastService.warning(completed + ' file' + (completed !== 1 ? 's' : '') + ' uploaded, ' + failed + ' failed');
+          }
         }
       }
     }));
@@ -528,17 +541,37 @@ export class FilesComponent implements OnInit {
     );
 
     let completed = 0;
+    let failed = 0;
     uploadObservables.forEach(obs => obs.subscribe({
       next: (uploaded) => {
         completed++;
         if (completed === 1) this.selectFile(uploaded);
-        if (completed === uploadObservables.length) {
+        if (completed + failed === uploadObservables.length) {
           this.loadFiles();
-          this.toastService.success(completed + ' file' + (completed !== 1 ? 's' : '') + ' uploaded');
+          if (failed === 0) {
+            this.toastService.success(completed + ' file' + (completed !== 1 ? 's' : '') + ' uploaded');
+          } else if (completed === 0) {
+            this.toastService.error('Upload failed. The server may be starting up - please try again.');
+          } else {
+            this.toastService.warning(completed + ' file' + (completed !== 1 ? 's' : '') + ' uploaded, ' + failed + ' failed');
+          }
         }
       },
-      error: () => {
+      error: (err) => {
         completed++;
+        failed++;
+        console.error('Upload failed:', err);
+        if (completed + failed === uploadObservables.length) {
+          this.loadFiles();
+          if (failed === uploadObservables.length) {
+            this.toastService.error('Upload failed. The server may be starting up - please try again.');
+          } else {
+            this.toastService.warning(completed + ' file' + (completed !== 1 ? 's' : '') + ' uploaded, ' + failed + ' failed');
+          }
+        }
+      }
+    }));
+  }
         if (completed === uploadObservables.length) {
           this.loadFiles();
           this.toastService.error('Some files failed to upload');
