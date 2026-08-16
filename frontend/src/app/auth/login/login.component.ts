@@ -110,7 +110,7 @@ import { HealthService } from '../../core/services/health.service';
   `,
   styles: []
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
   email = '';
   password = '';
   loading = false;
@@ -121,10 +121,6 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private router: Router
   ) {}
-
-  ngOnInit(): void {
-    this.healthService.checkHealth();
-  }
 
   onSubmit(): void {
     if (!this.email || !this.password) {

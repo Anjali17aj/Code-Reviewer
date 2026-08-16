@@ -310,7 +310,6 @@ export class ReviewComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.healthService.checkHealth();
     // Handle review ID from query params (e.g., /review?id=123)
     this.route.queryParams.subscribe(params => {
       if (params['id']) {

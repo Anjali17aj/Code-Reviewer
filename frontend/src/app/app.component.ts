@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './layouts/header/header.component';
 import { ToastService } from './core/services/toast.service';
+import { BackendStatusComponent } from './shared/components/backend-status/backend-status.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, HeaderComponent],
+  imports: [CommonModule, RouterOutlet, HeaderComponent, BackendStatusComponent],
   template: `
     <div class="min-h-screen flex flex-col">
       <app-header></app-header>
@@ -15,6 +16,9 @@ import { ToastService } from './core/services/toast.service';
         <router-outlet></router-outlet>
       </main>
     </div>
+
+    <!-- Backend Status Indicator -->
+    <app-backend-status></app-backend-status>
 
     <!-- Global Toast Container -->
     <div class="fixed bottom-4 right-4 z-50 flex flex-col gap-2 max-w-sm">

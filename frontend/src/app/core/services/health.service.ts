@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, runInInjectionContext, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { timeout } from 'rxjs/operators';
@@ -9,7 +9,10 @@ import { timeout } from 'rxjs/operators';
 export class HealthService {
   private backendUp = signal<boolean | null>(null);
   
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    // Auto-check health on service initialization
+    this.checkHealth();
+  }
 
   get isBackendUp() {
     return this.backendUp;
