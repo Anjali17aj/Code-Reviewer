@@ -19,7 +19,6 @@ spring:
       maximum-pool-size: 20
       minimum-idle: 10
       connection-timeout: 30000
-      initialization-fail-timeout: 10s
 
   jpa:
     hibernate:
