@@ -26,8 +26,8 @@ public class AuthController {
     private final JwtService jwtService;
     private final RateLimitService rateLimitService;
 
-    private static final int LOGIN_RATE_LIMIT = 5;
-    private static final int SIGNUP_RATE_LIMIT = 3;
+    private static final int LOGIN_RATE_LIMIT = 15;
+    private static final int SIGNUP_RATE_LIMIT = 10;
     private static final int AUTH_RATE_WINDOW_MINUTES = 1;
 
     @PostMapping("/signup")
