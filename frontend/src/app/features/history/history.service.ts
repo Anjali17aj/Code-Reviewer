@@ -19,7 +19,7 @@ export interface PaginatedResponse<T> {
   providedIn: 'root'
 })
 export class HistoryService {
-  private readonly HISTORY_ENDPOINT = '/api/history';
+  private readonly HISTORY_ENDPOINT = '/history';
 
   constructor(private apiService: ApiService) {}
 

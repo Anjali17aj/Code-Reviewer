@@ -14,7 +14,7 @@ import {
   providedIn: 'root'
 })
 export class ReviewService {
-  private readonly REVIEWS_ENDPOINT = '/api/reviews';
+  private readonly REVIEWS_ENDPOINT = '/reviews';
 
   constructor(private apiService: ApiService) {}
 

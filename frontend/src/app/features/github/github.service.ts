@@ -6,7 +6,7 @@ import { Repo, GithubBranch, GithubPR } from '../../shared/models/review.model';
 
 @Injectable({ providedIn: 'root' })
 export class GithubService {
-  private readonly GITHUB_ENDPOINT = '/api/github';
+  private readonly GITHUB_ENDPOINT = '/github';
 
   constructor(private apiService: ApiService) {}
 

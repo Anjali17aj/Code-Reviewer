@@ -6,7 +6,7 @@ import { CodeFile, Folder } from '../../shared/models/review.model';
 
 @Injectable({ providedIn: 'root' })
 export class FilesService {
-  private readonly FILES_ENDPOINT = '/api/files';
+  private readonly FILES_ENDPOINT = '/files';
 
   constructor(private apiService: ApiService) {}
 
