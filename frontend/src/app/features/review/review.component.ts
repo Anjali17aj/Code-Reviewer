@@ -7,6 +7,7 @@ import { ResultsComponent } from './results/results.component';
 import { ReviewService } from './review.service';
 import { FilesService } from '../files/files.service';
 import { ToastService } from '../../core/services/toast.service';
+import { HealthService } from '../../core/services/health.service';
 import {
   ReviewDTO,
   ReviewResponse,
@@ -75,16 +76,18 @@ import {
       </div>
 
       <!-- Cold Start Notice -->
-      <div class="flex-shrink-0 bg-amber-50 border-b border-amber-200 px-4 py-2">
-        <div class="max-w-7xl mx-auto">
-          <p class="text-xs text-amber-800 flex items-center gap-2">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-            First request after idle may take up to 5 minutes due to cold start
-          </p>
+      @if (healthService.isBackendUp() === false) {
+        <div class="flex-shrink-0 bg-amber-50 border-b border-amber-200 px-4 py-2">
+          <div class="max-w-7xl mx-auto">
+            <p class="text-xs text-amber-800 flex items-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              First request after idle may take up to 5 minutes due to cold start
+            </p>
+          </div>
         </div>
-      </div>
+      }
 
       <!-- Main Content Area -->
       <div class="flex-1 flex min-h-0">
@@ -300,12 +303,14 @@ export class ReviewComponent implements OnInit {
   showDeleteDialog = false;
 
   constructor(
+    public healthService: HealthService,
     private reviewService: ReviewService,
     private filesService: FilesService,
     private route: ActivatedRoute
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
+    this.healthService.checkHealth();
     // Handle review ID from query params (e.g., /review?id=123)
     this.route.queryParams.subscribe(params => {
       if (params['id']) {

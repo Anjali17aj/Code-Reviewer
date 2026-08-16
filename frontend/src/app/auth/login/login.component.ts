@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { HealthService } from '../../core/services/health.service';
 
 @Component({
   selector: 'app-login',
@@ -27,14 +28,16 @@ import { AuthService } from '../auth.service';
           </p>
         </div>
 
-        <div class="bg-amber-50 border border-amber-200 rounded-lg px-4 py-3 text-sm text-amber-800">
-          <div class="flex items-start gap-2">
-            <svg class="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-            <p>First request after idle may take up to 5 minutes due to cold start.</p>
+        @if (healthService.isBackendUp() === false) {
+          <div class="bg-amber-50 border border-amber-200 rounded-lg px-4 py-3 text-sm text-amber-800">
+            <div class="flex items-start gap-2">
+              <svg class="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              <p>First request after idle may take up to 5 minutes due to cold start.</p>
+            </div>
           </div>
-        </div>
+        }
 
         <form class="mt-8 space-y-6" (ngSubmit)="onSubmit()">
           @if (error) {
@@ -107,16 +110,21 @@ import { AuthService } from '../auth.service';
   `,
   styles: []
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   email = '';
   password = '';
   loading = false;
   error = '';
 
   constructor(
+    public healthService: HealthService,
     private authService: AuthService,
     private router: Router
   ) {}
+
+  ngOnInit(): void {
+    this.healthService.checkHealth();
+  }
 
   onSubmit(): void {
     if (!this.email || !this.password) {
