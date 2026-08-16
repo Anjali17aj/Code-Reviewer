@@ -10,8 +10,6 @@ import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactor
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-import java.time.Duration;
-
 @Configuration
 public class RedisConfig {
 
@@ -48,7 +46,6 @@ public class RedisConfig {
             LettuceClientConfiguration clientConfig = LettuceClientConfiguration.builder()
                     .useSsl()
                     .disablePeerVerification()
-                    .commandTimeout(Duration.ofSeconds(5))
                     .build();
 
             return new LettuceConnectionFactory(config, clientConfig);
