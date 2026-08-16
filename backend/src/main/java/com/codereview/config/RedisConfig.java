@@ -43,10 +43,11 @@ public class RedisConfig {
 
             // Enable SSL for rediss:// protocol
             boolean useSsl = redisUrl.startsWith("rediss://");
-            LettuceClientConfiguration clientConfig = LettuceClientConfiguration.builder()
-                    .useSsl()
-                    .disablePeerVerification()
-                    .build();
+            LettuceClientConfiguration.LettuceClientConfigurationBuilder clientConfigBuilder = LettuceClientConfiguration.builder();
+            if (useSsl) {
+                clientConfigBuilder.useSsl().disablePeerVerification();
+            }
+            LettuceClientConfiguration clientConfig = clientConfigBuilder.build();
 
             return new LettuceConnectionFactory(config, clientConfig);
         }
