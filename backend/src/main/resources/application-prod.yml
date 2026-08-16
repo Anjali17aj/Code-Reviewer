@@ -6,6 +6,10 @@ cors:
   allowed-origins: ${CORS_ALLOWED_ORIGINS:https://code-reviewer-navy-two.vercel.app}
 
 spring:
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 25MB
   datasource:
     url: ${JDBC_DATABASE_URL:jdbc:postgresql://localhost:5432/codereview}
     username: ${DB_USERNAME:postgres}
@@ -15,11 +19,13 @@ spring:
       maximum-pool-size: 20
       minimum-idle: 10
       connection-timeout: 30000
+      initialization-fail-timeout: 10s
 
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: false
+    open-in-view: false
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
@@ -31,6 +37,11 @@ spring:
   data:
     redis:
       url: ${REDIS_URL:}
+
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    default-property-inclusion: non_null
 
 logging:
   level:
