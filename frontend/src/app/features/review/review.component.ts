@@ -74,6 +74,18 @@ import {
         </div>
       </div>
 
+      <!-- Cold Start Notice -->
+      <div class="flex-shrink-0 bg-amber-50 border-b border-amber-200 px-4 py-2">
+        <div class="max-w-7xl mx-auto">
+          <p class="text-xs text-amber-800 flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            First request after idle may take 1-2 minutes due to cold start on free tier
+          </p>
+        </div>
+      </div>
+
       <!-- Main Content Area -->
       <div class="flex-1 flex min-h-0">
         <!-- Paste Code Mode -->

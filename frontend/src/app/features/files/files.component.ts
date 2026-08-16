@@ -572,13 +572,6 @@ export class FilesComponent implements OnInit {
       }
     }));
   }
-        if (completed === uploadObservables.length) {
-          this.loadFiles();
-          this.toastService.error('Some files failed to upload');
-        }
-      }
-    }));
-  }
 
   private detectLanguage(filename: string): string {
     const ext = filename.split('.').pop()?.toLowerCase();
