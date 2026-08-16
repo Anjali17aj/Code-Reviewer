@@ -1,0 +1,63 @@
+server:
+  port: 8080
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 25MB
+  datasource:
+    url: jdbc:mysql://localhost:3306/codereview?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:root}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    default-property-inclusion: non_null
+
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+
+jwt:
+  secret: ${JWT_SECRET}
+  expiration: 86400000  # 24 hours in milliseconds
+
+logging:
+  level:
+    com.codereview: DEBUG
+    org.springframework.security: WARN
+
+openai:
+  api-key: ${OPENAI_API_KEY:}
+  base-url: ${OPENAI_BASE_URL:https://api.openai.com}
+  model: ${OPENAI_MODEL:gpt-4}
+  max-tokens: 4000
+  temperature: 0.1
+
+review:
+  max-code-length: 100000
+
+github:
+  client-id: ${GITHUB_CLIENT_ID:}
+  client-secret: ${GITHUB_CLIENT_SECRET:}
+  redirect-uri: ${GITHUB_REDIRECT_URI:http://localhost:8080/api/github/callback}
+
+ratelimit:
+  max-reviews-per-day: ${RATE_LIMIT_MAX_REVIEWS:50}
+  window-hours: ${RATE_LIMIT_WINDOW_HOURS:24}

@@ -1,0 +1,229 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-gray-100 min-h-screen text-gray-900;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Focus styles for accessibility */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-blue-500 ring-offset-2;
+  }
+}
+
+@layer components {
+  /* Base button */
+  .btn {
+    @apply inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2;
+  }
+
+  .btn-primary {
+    @apply bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500;
+    @apply disabled:bg-blue-300 disabled:cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply bg-gray-100 text-gray-700 hover:bg-gray-200 focus:ring-gray-400;
+  }
+
+  .btn-danger {
+    @apply bg-red-600 text-white hover:bg-red-700 focus:ring-red-500;
+  }
+
+  .btn-ghost {
+    @apply text-gray-500 hover:text-gray-700 hover:bg-gray-100;
+  }
+
+  .btn-sm {
+    @apply px-3 py-1.5 text-xs;
+  }
+
+  .btn-lg {
+    @apply px-6 py-3 text-base;
+  }
+
+  /* Base input */
+  .input {
+    @apply w-full px-3 py-2 text-sm border border-gray-300 rounded-lg;
+    @apply placeholder-gray-400 text-gray-900 bg-white;
+    @apply focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none;
+    @apply disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed;
+    @apply transition-colors duration-200;
+  }
+
+  /* Card */
+  .card {
+    @apply bg-white rounded-xl border border-gray-200 shadow-sm;
+  }
+
+  .card-hover {
+    @apply card hover:shadow-md hover:border-gray-300 transition-all duration-200 cursor-pointer;
+  }
+}
+
+@layer utilities {
+  /* Transition utilities */
+  .transition-default {
+    @apply transition-all duration-200 ease-in-out;
+  }
+}
+
+/* ============================================================
+   Monaco Editor overrides
+   ============================================================ */
+.monaco-editor {
+  border-radius: 0.5rem;
+}
+
+.monaco-editor .margin {
+  background: transparent !important;
+}
+
+/* ============================================================
+   Scrollbar styling (cross-browser)
+   ============================================================ */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #d1d5db transparent;
+}
+
+/* ============================================================
+   Selection highlight
+   ============================================================ */
+::selection {
+  background: rgba(59, 130, 246, 0.2);
+}
+
+/* ============================================================
+   Loading spinner animation
+   ============================================================ */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* ============================================================
+   Fade in/out animation
+   ============================================================ */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.2s ease-out;
+}
+
+/* ============================================================
+   Slide up animation
+   ============================================================ */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.2s ease-out;
+}
+
+/* ============================================================
+   Slide down animation
+   ============================================================ */
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-slide-down {
+  animation: slideDown 0.2s ease-out;
+}
+
+/* ============================================================
+   Pulse animation for loading states
+   ============================================================ */
+@keyframes pulse-subtle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 2s ease-in-out infinite;
+}
+
+/* ============================================================
+   Skeleton loading placeholder
+   ============================================================ */
+.skeleton {
+  @apply bg-gray-200 rounded animate-pulse-subtle;
+}
+
+/* ============================================================
+   Code block styling
+   ============================================================ */
+code, pre {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+}
+
+pre {
+  @apply text-sm leading-relaxed;
+}
+
+/* ============================================================
+   Toast / Notification transitions
+   ============================================================ */
+.toast-enter {
+  animation: slideUp 0.3s ease-out;
+}
+
+.toast-exit {
+  animation: fadeOut 0.2s ease-in forwards;
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(8px); }
+}
+
+/* ============================================================
+   Print styles
+   ============================================================ */
+@media print {
+  header, nav, .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: white;
+  }
+}

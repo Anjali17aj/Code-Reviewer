@@ -1,0 +1,101 @@
+stages:
+  - test
+  - build
+  - deploy
+
+variables:
+  MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
+
+cache:
+  key: "${CI_COMMIT_REF_SLUG}"
+  paths:
+    - .m2/repository
+    - frontend/node_modules
+
+# Backend Test
+backend-test:
+  stage: test
+  image: maven:3.9-eclipse-temurin-17
+  script:
+    - cd backend
+    - mvn clean test -B
+  artifacts:
+    reports:
+      junit: backend/target/surefire-reports/*.xml
+  only:
+    - branches
+
+# Frontend Test
+frontend-test:
+  stage: test
+  image: node:20-alpine
+  script:
+    - cd frontend
+    - npm ci
+    - npm run test -- --watch=false --browsers=ChromeHeadless
+  only:
+    - branches
+
+# Build Backend
+backend-build:
+  stage: build
+  image: maven:3.9-eclipse-temurin-17
+  script:
+    - cd backend
+    - mvn clean package -DskipTests -B
+  artifacts:
+    paths:
+      - backend/target/*.jar
+  only:
+    - main
+    - develop
+
+# Build Frontend
+frontend-build:
+  stage: build
+  image: node:20-alpine
+  script:
+    - cd frontend
+    - npm ci
+    - npm run build -- --configuration=production
+  artifacts:
+    paths:
+      - frontend/dist/
+  only:
+    - main
+    - develop
+
+# Build Docker Images
+docker-build:
+  stage: build
+  image: docker:24
+  services:
+    - docker:24-dind
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - docker build -t $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_SHA ./backend
+    - docker build -t $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_SHA ./frontend
+    - docker push $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_SHA
+    - docker push $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_SHA
+  only:
+    - main
+
+# Deploy to Production
+deploy-production:
+  stage: deploy
+  image: alpine:latest
+  before_script:
+    - apk add --no-cache openssh-client
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - echo "$SSH_KNOWN_HOSTS" >> ~/.ssh/known_hosts
+  script:
+    - ssh $DEPLOY_USER@$DEPLOY_HOST "cd /opt/codereview && docker compose pull && docker compose up -d"
+  environment:
+    name: production
+    url: $PRODUCTION_URL
+  only:
+    - main
+  when: manual
