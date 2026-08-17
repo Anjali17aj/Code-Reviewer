@@ -39,21 +39,20 @@ public class GithubController {
     }
 
     /**
-     * GET /api/github/callback?code=...&state=...
+     * POST /api/github/callback
      * Handles the OAuth callback, exchanges code for token, connects account.
      * Validates the state parameter for CSRF protection.
      */
-    @GetMapping("/callback")
+    @PostMapping("/callback")
     public ResponseEntity<Map<String, Object>> handleCallback(
             @AuthenticationPrincipal UserDetails userDetails,
-            @RequestParam String code,
-            @RequestParam(required = false) String state) {
+            @RequestBody GithubCallbackRequest request) {
         Long userId = extractUserId(userDetails);
 
         // Validate OAuth state parameter
-        githubService.validateOAuthState(state);
+        githubService.validateOAuthState(request.getState());
 
-        String token = githubService.exchangeCodeForToken(code);
+        String token = githubService.exchangeCodeForToken(request.getCode());
         githubService.connectAccount(userId, token);
         return ResponseEntity.ok(Map.of(
                 "message", "GitHub account connected successfully",

@@ -55,7 +55,7 @@ jwt:
 github:
   client-id: ${GITHUB_CLIENT_ID}
   client-secret: ${GITHUB_CLIENT_SECRET}
-  redirect-uri: ${GITHUB_REDIRECT_URI}
+  redirect-uri: ${GITHUB_REDIRECT_URI:https://code-reviewer-navy-two.vercel.app/github-callback}
 
 ratelimit:
   max-reviews-per-day: ${RATE_LIMIT_MAX_REVIEWS:50}

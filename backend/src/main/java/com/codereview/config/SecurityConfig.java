@@ -47,7 +47,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/api/health").permitAll()
-                .requestMatchers("/api/github/login", "/api/github/auth-url", "/api/github/status", "/api/github/callback").permitAll()
+                .requestMatchers("/api/github/login", "/api/github/auth-url", "/api/github/status").permitAll()
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session

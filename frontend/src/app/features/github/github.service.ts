@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApiService } from '../../core/services/api.service';
 import { Repo, GithubBranch, GithubPR } from '../../shared/models/review.model';
@@ -14,9 +13,8 @@ export class GithubService {
     return this.apiService.get<{ url: string }>(`${this.GITHUB_ENDPOINT}/auth-url`);
   }
 
-  handleCallback(code: string): Observable<{ message: string }> {
-    const params = new HttpParams().set('code', code);
-    return this.apiService.get<{ message: string }>(`${this.GITHUB_ENDPOINT}/callback`, params);
+  handleCallback(code: string, state: string): Observable<{ message: string }> {
+    return this.apiService.post<{ message: string }>(`${this.GITHUB_ENDPOINT}/callback`, { code, state });
   }
 
   getRepos(): Observable<Repo[]> {

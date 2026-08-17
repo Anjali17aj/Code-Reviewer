@@ -5,6 +5,7 @@ import { ReviewComponent } from './features/review/review.component';
 import { FilesComponent } from './features/files/files.component';
 import { GithubComponent } from './features/github/github.component';
 import { HistoryComponent } from './features/history/history.component';
+import { GithubCallbackComponent } from './features/github-callback/github-callback.component';
 import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
@@ -14,6 +15,7 @@ export const routes: Routes = [
   { path: 'signup', component: SignupComponent },
   { path: 'files', component: FilesComponent, canActivate: [authGuard] },
   { path: 'github', component: GithubComponent, canActivate: [authGuard] },
+  { path: 'github-callback', component: GithubCallbackComponent, canActivate: [authGuard] },
   { path: 'history', component: HistoryComponent, canActivate: [authGuard] },
   { path: '**', redirectTo: '' }
 ];
